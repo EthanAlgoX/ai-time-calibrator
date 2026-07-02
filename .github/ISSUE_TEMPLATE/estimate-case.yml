@@ -1,0 +1,33 @@
+name: Real estimate case
+description: Share a real or anonymized software estimate example.
+title: "[Estimate case]: "
+labels: ["estimate-case"]
+body:
+  - type: textarea
+    id: request
+    attributes:
+      label: Task request
+      description: What was being built, changed, debugged, or reviewed?
+    validations:
+      required: true
+  - type: input
+    id: traditional-estimate
+    attributes:
+      label: Traditional estimate
+      placeholder: "Example: 3 days"
+    validations:
+      required: true
+  - type: input
+    id: ai-adjusted-estimate
+    attributes:
+      label: AI-adjusted or actual result
+      placeholder: "Example: 1 day"
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Existing codebase quality, tests, risk, external dependencies, or human bottlenecks.
+    validations:
+      required: true

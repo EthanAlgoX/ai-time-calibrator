@@ -1,0 +1,26 @@
+name: Rule change proposal
+description: Suggest a change to task types, compression factors, or risk rules.
+title: "[Rule change]: "
+labels: ["rule-change"]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What rule should change?
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why would this improve AI-assisted estimates?
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples or evidence
+      description: Add real or anonymized cases if available.
+    validations:
+      required: false

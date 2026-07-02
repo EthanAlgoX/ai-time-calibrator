@@ -39,15 +39,28 @@ rules/
 skills/
   codex/SKILL.md             Codex skill adapter
 examples/
+  auth-feature.md            Example estimate
   crud-api.md                Example estimate
+  database-migration.md      Example estimate
   frontend-page.md           Example estimate
+  payment-integration.md     Example estimate
+  performance-optimization.md  Example estimate
   refactor-module.md         Example estimate
   production-bugfix.md       Example estimate
 scripts/
-  estimate.py                Minimal dependency-free CLI prototype
+  estimate.py                Dependency-free CLI prototype
+tests/
+  test_estimate_cli.py       CLI behavior tests
+  test_rules.py              Rule integrity tests
 ```
 
 ## Quick Start
+
+List supported task types:
+
+```bash
+python3 scripts/estimate.py --list-task-types
+```
 
 Estimate from a traditional duration and a task type:
 
@@ -59,12 +72,28 @@ Example output:
 
 ```text
 Traditional estimate: 24.0h
-Task type: crud_api
+Task type: crud_api (CRUD, API endpoint, or standard backend feature)
 AI-adjusted estimate:
-  optimistic: 6.0h
-  expected:   9.0h
+  optimistic:   6.0h
+  expected:     9.1h
   conservative: 14.4h
 Confidence: medium
+```
+
+Add verification time and risk buffer:
+
+```bash
+python3 scripts/estimate.py \
+  --traditional-hours 16 \
+  --task-type frontend_page \
+  --verification-hours 2 \
+  --risk-buffer 0.2
+```
+
+Generate JSON output:
+
+```bash
+python3 scripts/estimate.py --traditional-hours 24 --task-type crud_api --format json
 ```
 
 ## Using With Codex
@@ -76,6 +105,12 @@ skills/codex/SKILL.md
 ```
 
 Install or copy it into your Codex skills directory, then ask Codex to estimate development tasks. The skill guides Codex to classify the task, apply AI-era calibration, and return a range with assumptions and risks.
+
+Example prompt:
+
+```text
+Use $ai-time-calibrator to estimate building a CRUD API with tests.
+```
 
 ## Core Principle
 
@@ -95,7 +130,22 @@ AI compresses some work much more than others:
 
 ## Status
 
-This is an early MVP. The current focus is defining a clear estimation model, simple rule files, and AI-agent adapters. Contributions with real before/after estimate examples are especially useful.
+This is an early v0.1 project. The current focus is defining a clear estimation model, simple rule files, a tested CLI, and AI-agent adapters. Contributions with real before/after estimate examples are especially useful.
+
+## Testing
+
+Run the local test suite:
+
+```bash
+python3 -m py_compile scripts/estimate.py
+python3 -m unittest discover -s tests
+```
+
+The GitHub Actions workflow runs the same checks on push and pull request.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add task types, propose calibration changes, or submit real-world estimate examples.
 
 ## License
 
