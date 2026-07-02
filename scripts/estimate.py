@@ -160,6 +160,11 @@ def build_parser(task_types: dict[str, dict[str, Any]]) -> argparse.ArgumentPars
         action="store_true",
         help="List supported task types and exit.",
     )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        help="Optional path to write the rendered output instead of printing to stdout.",
+    )
     return parser
 
 
@@ -191,47 +196,66 @@ def estimate(
     }
 
 
-def list_task_types(task_types: dict[str, dict[str, Any]], output_format: str) -> None:
+def render_task_types(task_types: dict[str, dict[str, Any]], output_format: str) -> str:
     if output_format == "json":
-        print(json.dumps(task_types, indent=2, sort_keys=True))
+        return json.dumps(task_types, indent=2, sort_keys=True)
+
+    return "\n".join(
+        f"{name}: {task_types[name].get('label', name)}"
+        for name in sorted(task_types)
+    )
+
+
+def render_estimate_text(args: argparse.Namespace, task: dict[str, Any], adjusted: dict[str, float]) -> str:
+    lines = [
+        f"Traditional estimate: {args.traditional_hours:.1f}h",
+        f"Task type: {args.task_type} ({task['label']})",
+        "AI-adjusted estimate:",
+        f"  optimistic:   {adjusted['optimistic']:.1f}h",
+        f"  expected:     {adjusted['expected']:.1f}h",
+        f"  conservative: {adjusted['conservative']:.1f}h",
+        f"Confidence: {task['confidence']}",
+    ]
+
+    if args.verification_hours:
+        lines.append(f"Fixed verification/review time added: {args.verification_hours:.1f}h")
+    if args.risk_buffer:
+        lines.append(f"Risk buffer applied: {args.risk_buffer:.0%}")
+
+    return "\n".join(lines)
+
+
+def render_estimate_markdown(args: argparse.Namespace, task: dict[str, Any], adjusted: dict[str, float]) -> str:
+    lines = [
+        "# AI-Assisted Estimate",
+        "",
+        f"- Traditional estimate: {args.traditional_hours:.1f}h",
+        f"- Task type: `{args.task_type}` ({task['label']})",
+        f"- Confidence: {task['confidence']}",
+    ]
+    if args.verification_hours:
+        lines.append(f"- Fixed verification/review time added: {args.verification_hours:.1f}h")
+    if args.risk_buffer:
+        lines.append(f"- Risk buffer applied: {args.risk_buffer:.0%}")
+    lines.extend(
+        [
+            "",
+            "| Range | Estimate |",
+            "| --- | ---: |",
+            f"| Optimistic | {adjusted['optimistic']:.1f}h |",
+            f"| Expected | {adjusted['expected']:.1f}h |",
+            f"| Conservative | {adjusted['conservative']:.1f}h |",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_or_print(output: str, path: Path | None) -> None:
+    if path is None:
+        print(output)
         return
-
-    for name in sorted(task_types):
-        task = task_types[name]
-        print(f"{name}: {task.get('label', name)}")
-
-
-def print_estimate_text(args: argparse.Namespace, task: dict[str, Any], adjusted: dict[str, float]) -> None:
-    print(f"Traditional estimate: {args.traditional_hours:.1f}h")
-    print(f"Task type: {args.task_type} ({task['label']})")
-    print("AI-adjusted estimate:")
-    print(f"  optimistic:   {adjusted['optimistic']:.1f}h")
-    print(f"  expected:     {adjusted['expected']:.1f}h")
-    print(f"  conservative: {adjusted['conservative']:.1f}h")
-    print(f"Confidence: {task['confidence']}")
-
-    if args.verification_hours:
-        print(f"Fixed verification/review time added: {args.verification_hours:.1f}h")
-    if args.risk_buffer:
-        print(f"Risk buffer applied: {args.risk_buffer:.0%}")
-
-
-def print_estimate_markdown(args: argparse.Namespace, task: dict[str, Any], adjusted: dict[str, float]) -> None:
-    print("# AI-Assisted Estimate")
-    print()
-    print(f"- Traditional estimate: {args.traditional_hours:.1f}h")
-    print(f"- Task type: `{args.task_type}` ({task['label']})")
-    print(f"- Confidence: {task['confidence']}")
-    if args.verification_hours:
-        print(f"- Fixed verification/review time added: {args.verification_hours:.1f}h")
-    if args.risk_buffer:
-        print(f"- Risk buffer applied: {args.risk_buffer:.0%}")
-    print()
-    print("| Range | Estimate |")
-    print("| --- | ---: |")
-    print(f"| Optimistic | {adjusted['optimistic']:.1f}h |")
-    print(f"| Expected | {adjusted['expected']:.1f}h |")
-    print(f"| Conservative | {adjusted['conservative']:.1f}h |")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(output + "\n", encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -249,7 +273,7 @@ def main(argv: list[str] | None = None) -> int:
     validate_args(parser, args)
 
     if args.list_task_types:
-        list_task_types(task_types, args.format)
+        write_or_print(render_task_types(task_types, args.format), args.output)
         return 0
 
     task = task_types[args.task_type]
@@ -270,11 +294,13 @@ def main(argv: list[str] | None = None) -> int:
             "verification_hours": args.verification_hours,
             "risk_buffer": args.risk_buffer,
         }
-        print(json.dumps(payload, indent=2, sort_keys=True))
+        output = json.dumps(payload, indent=2, sort_keys=True)
     elif args.format == "markdown":
-        print_estimate_markdown(args, task, adjusted)
+        output = render_estimate_markdown(args, task, adjusted)
     else:
-        print_estimate_text(args, task, adjusted)
+        output = render_estimate_text(args, task, adjusted)
+
+    write_or_print(output, args.output)
 
     return 0
 

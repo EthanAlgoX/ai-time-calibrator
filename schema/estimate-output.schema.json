@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ai-time-calibrator/estimate-output.schema.json",
+  "title": "AI Time Calibrator Estimate Output",
+  "type": "object",
+  "required": [
+    "traditional_estimate_hours",
+    "task_type",
+    "task_label",
+    "ai_adjusted_estimate_hours",
+    "confidence",
+    "verification_hours",
+    "risk_buffer"
+  ],
+  "properties": {
+    "traditional_estimate_hours": {
+      "type": "number",
+      "minimum": 0
+    },
+    "task_type": {
+      "type": "string"
+    },
+    "task_label": {
+      "type": "string"
+    },
+    "ai_adjusted_estimate_hours": {
+      "type": "object",
+      "required": ["optimistic", "expected", "conservative"],
+      "properties": {
+        "optimistic": {
+          "type": "number",
+          "minimum": 0
+        },
+        "expected": {
+          "type": "number",
+          "minimum": 0
+        },
+        "conservative": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "verification_hours": {
+      "type": "number",
+      "minimum": 0
+    },
+    "risk_buffer": {
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}

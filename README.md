@@ -60,6 +60,10 @@ tests/
   test_rules.py              Rule integrity tests
 dataset/
   estimates.yaml             Example calibration dataset structure
+schema/
+  task-types.schema.json      Task type rule schema
+  estimate-output.schema.json CLI JSON output schema
+  dataset.schema.json         Dataset schema
 ```
 
 ## Dataset
@@ -126,6 +130,26 @@ python3 scripts/estimate.py \
   --traditional-hours 24 \
   --task-type crud_api
 ```
+
+Write output to a file:
+
+```bash
+python3 scripts/estimate.py \
+  --traditional-hours 24 \
+  --task-type crud_api \
+  --format markdown \
+  --output report.md
+```
+
+## Schemas
+
+JSON Schema files live in:
+
+```text
+schema/
+```
+
+They document the task type rule format, CLI JSON output, and dataset records.
 
 ## AI Tool Adapters
 

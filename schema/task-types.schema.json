@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ai-time-calibrator/task-types.schema.json",
+  "title": "AI Time Calibrator Task Types",
+  "type": "object",
+  "required": ["version", "task_types"],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "task_types": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label", "ai_compression", "confidence"],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "ai_compression": {
+            "type": "object",
+            "required": ["optimistic", "expected", "conservative"],
+            "properties": {
+              "optimistic": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1.5
+              },
+              "expected": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1.5
+              },
+              "conservative": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1.5
+              }
+            },
+            "additionalProperties": false
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

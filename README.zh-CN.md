@@ -55,6 +55,16 @@ python3 scripts/estimate.py --traditional-hours 24 --task-type crud_api --format
 python3 scripts/estimate.py --traditional-hours 24 --task-type crud_api --format markdown
 ```
 
+写入文件：
+
+```bash
+python3 scripts/estimate.py \
+  --traditional-hours 24 \
+  --task-type crud_api \
+  --format markdown \
+  --output report.md
+```
+
 使用团队自己的规则文件：
 
 ```bash

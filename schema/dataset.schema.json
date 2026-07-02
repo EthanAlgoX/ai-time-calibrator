@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/ai-time-calibrator/dataset.schema.json",
+  "title": "AI Time Calibrator Dataset",
+  "type": "object",
+  "required": ["version", "cases"],
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "task_type",
+          "task_summary",
+          "traditional_estimate_hours",
+          "ai_adjusted_estimate_hours",
+          "confidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": ["synthetic", "anonymized", "public"]
+          },
+          "task_type": {
+            "type": "string"
+          },
+          "task_summary": {
+            "type": "string"
+          },
+          "traditional_estimate_hours": {
+            "type": "number",
+            "minimum": 0
+          },
+          "ai_adjusted_estimate_hours": {
+            "type": "object",
+            "required": ["optimistic", "expected", "conservative"]
+          },
+          "actual_hours": {
+            "type": ["number", "null"],
+            "minimum": 0
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "context": {
+            "type": "object"
+          },
+          "acceleration_drivers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

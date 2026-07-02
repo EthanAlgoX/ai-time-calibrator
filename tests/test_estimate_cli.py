@@ -73,6 +73,27 @@ class EstimateCliTests(unittest.TestCase):
         self.assertIn("| Expected | 9.1h |", result.stdout)
         self.assertIn("| Conservative | 14.4h |", result.stdout)
 
+    def test_output_writes_report_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_path = Path(tmp_dir) / "reports" / "estimate.md"
+            result = run_cli(
+                "--traditional-hours",
+                "24",
+                "--task-type",
+                "crud_api",
+                "--format",
+                "markdown",
+                "--output",
+                str(output_path),
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout, "")
+            self.assertTrue(output_path.exists())
+            content = output_path.read_text(encoding="utf-8")
+            self.assertIn("# AI-Assisted Estimate", content)
+            self.assertIn("| Expected | 9.1h |", content)
+
     def test_list_task_types(self) -> None:
         result = run_cli("--list-task-types")
 
