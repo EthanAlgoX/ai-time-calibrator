@@ -1,0 +1,18 @@
+{
+  "name": "ai-time-calibrator",
+  "description": "Calibrate software development estimates for AI-assisted workflows.",
+  "version": "0.1.3",
+  "author": {
+    "name": "EthanAlgoX"
+  },
+  "homepage": "https://github.com/EthanAlgoX/ai-time-calibrator",
+  "repository": "https://github.com/EthanAlgoX/ai-time-calibrator",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "skills",
+    "estimation",
+    "software-development",
+    "planning"
+  ]
+}

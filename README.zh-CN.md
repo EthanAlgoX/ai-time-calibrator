@@ -74,18 +74,39 @@ python3 scripts/estimate.py \
   --task-type crud_api
 ```
 
-## AI 工具适配器
+## Plugin 与 Skill 接入
 
-当前包含：
+统一 skill 入口是：
 
 ```text
-skills/codex/SKILL.md
-adapters/claude-code/CLAUDE.md
+skills/ai-time-calibrator/SKILL.md
+```
+
+这个结构更接近主流开源 skill 项目：skill 本身是主体，Codex、Claude Code、Cursor 等只是不同消费入口。
+
+当前包含这些插件 manifest：
+
+```text
+.codex-plugin/plugin.json
+.claude-plugin/plugin.json
+.cursor-plugin/plugin.json
+```
+
+也保留了非 skill 规则适配：
+
+```text
 adapters/cursor/rules.md
 adapters/windsurf/rules.md
 ```
 
-这些适配器复用同一套校准模型，方便在不同 AI 编程工具里得到一致的估时逻辑。
+手动安装 skill：
+
+```bash
+cp -R skills/ai-time-calibrator ~/.claude/skills/
+cp -R skills/ai-time-calibrator ~/.codex/skills/
+```
+
+这些入口复用同一套校准模型，方便在不同 AI 编程工具里得到一致的估时逻辑。
 
 ## 如何贡献
 

@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v0.1.3
+
+- Moved the skill to the standard `skills/ai-time-calibrator/SKILL.md` layout.
+- Added Codex, Claude, and Cursor plugin manifests.
+- Added `.agents/skills` compatibility symlink.
+- Removed the non-standard Claude `CLAUDE.md` adapter in favor of the shared skill.
+
 ## v0.1.2
 
 - Added `--output` support for writing CLI output to files.

@@ -39,11 +39,18 @@ rules/
   risk-factors.yaml          Risk multipliers and uncertainty signals
   calibration-model.yaml     Estimation workflow and output contract
 adapters/
-  claude-code/CLAUDE.md      Claude Code adapter
   cursor/rules.md            Cursor rules adapter
   windsurf/rules.md          Windsurf rules adapter
 skills/
-  codex/SKILL.md             Codex skill adapter
+  ai-time-calibrator/SKILL.md Shared AI-agent skill
+.codex-plugin/
+  plugin.json                Codex plugin manifest
+.claude-plugin/
+  plugin.json                Claude plugin manifest
+.cursor-plugin/
+  plugin.json                Cursor plugin manifest
+.agents/
+  skills                     Compatibility symlink to ./skills
 examples/
   auth-feature.md            Example estimate
   crud-api.md                Example estimate
@@ -151,15 +158,36 @@ schema/
 
 They document the task type rule format, CLI JSON output, and dataset records.
 
-## AI Tool Adapters
+## Plugin and Skill Installation
 
-The first Codex skill adapter is available at:
+The shared skill lives at:
 
 ```text
-skills/codex/SKILL.md
+skills/ai-time-calibrator/SKILL.md
 ```
 
-Install or copy it into your Codex skills directory, then ask Codex to estimate development tasks. The skill guides Codex to classify the task, apply AI-era calibration, and return a range with assumptions and risks.
+This follows the common `skills/<skill-name>/SKILL.md` layout used by open skill projects. Codex, Claude Code, Cursor, and other agent harnesses should consume the same skill instead of separate client-specific copies.
+
+Plugin manifests are provided for supported hosts:
+
+```text
+.codex-plugin/plugin.json
+.claude-plugin/plugin.json
+.cursor-plugin/plugin.json
+```
+
+Manual skill install:
+
+```bash
+cp -R skills/ai-time-calibrator ~/.claude/skills/
+cp -R skills/ai-time-calibrator ~/.codex/skills/
+```
+
+Generic agent compatibility:
+
+```text
+.agents/skills -> ../skills
+```
 
 Example prompt:
 
@@ -167,15 +195,14 @@ Example prompt:
 Use $ai-time-calibrator to estimate building a CRUD API with tests.
 ```
 
-Additional adapters:
+Additional non-skill rule adapters:
 
 ```text
-adapters/claude-code/CLAUDE.md
 adapters/cursor/rules.md
 adapters/windsurf/rules.md
 ```
 
-These adapters reuse the same calibration model so estimates stay consistent across tools.
+These rule adapters reuse the same calibration model so estimates stay consistent across tools.
 
 ## Core Principle
 

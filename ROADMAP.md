@@ -4,15 +4,14 @@
 
 - Rule model for AI-assisted software estimates.
 - Dependency-free CLI.
-- Codex skill adapter.
+- Standard shared skill layout.
+- Codex, Claude, and Cursor plugin manifests.
 - Example estimates.
 - Unit tests and GitHub Actions.
 
 ## v0.2
 
-- Claude Code adapter.
-- Cursor rules adapter.
-- Windsurf rules adapter.
+- Cursor and Windsurf rule adapters.
 - Custom CLI rule file support.
 - More real-world estimate examples.
 - Better multi-component estimates.
