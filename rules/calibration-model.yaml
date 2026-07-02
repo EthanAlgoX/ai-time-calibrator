@@ -1,0 +1,41 @@
+version: 0.1.0
+description: Output contract and estimation workflow for AI-assisted software development estimates.
+
+workflow:
+  - Identify the task type or split the work into multiple task types.
+  - Separate implementation, verification, integration, human bottleneck, and risk.
+  - Apply AI compression only to the portions AI can actually accelerate.
+  - Return a range: optimistic, expected, conservative.
+  - State assumptions, confidence, acceleration drivers, and risks.
+
+estimate_components:
+  implementation:
+    description: Code writing, code modification, local iteration, and mechanical refactoring.
+    ai_compressible: true
+
+  verification:
+    description: Tests, manual QA, visual QA, regression checks, and review.
+    ai_compressible: partially
+
+  integration:
+    description: Wiring into existing systems, deployment paths, data, auth, APIs, and environments.
+    ai_compressible: partially
+
+  human_bottleneck:
+    description: Requirements, product decisions, stakeholder feedback, approvals, and permissions.
+    ai_compressible: weakly
+
+  risk_buffer:
+    description: Unknowns, rollback planning, migration safety, missing context, and production risk.
+    ai_compressible: no
+
+output_format:
+  required_fields:
+    - traditional_estimate
+    - ai_adjusted_estimate
+    - task_type
+    - confidence
+    - assumptions
+    - acceleration_drivers
+    - risks
+    - suggested_next_steps

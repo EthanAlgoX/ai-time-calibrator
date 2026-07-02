@@ -1,0 +1,94 @@
+version: 0.1.0
+description: Default task categories and AI-assisted implementation compression ranges.
+
+task_types:
+  boilerplate:
+    label: Boilerplate or scaffolding
+    ai_compression:
+      optimistic: 0.10
+      expected: 0.20
+      conservative: 0.40
+    confidence: high
+    notes:
+      - Strongest when conventions and target framework are already known.
+
+  crud_api:
+    label: CRUD, API endpoint, or standard backend feature
+    ai_compression:
+      optimistic: 0.25
+      expected: 0.38
+      conservative: 0.60
+    confidence: medium
+    notes:
+      - Strong acceleration when the existing codebase has similar examples.
+      - Verification and integration often remain meaningful costs.
+
+  test_generation:
+    label: Unit, integration, or regression test generation
+    ai_compression:
+      optimistic: 0.20
+      expected: 0.35
+      conservative: 0.60
+    confidence: medium
+    notes:
+      - AI can draft tests quickly, but humans must verify intent and coverage.
+
+  frontend_page:
+    label: Frontend page, component, or interaction
+    ai_compression:
+      optimistic: 0.30
+      expected: 0.50
+      conservative: 0.70
+    confidence: medium
+    notes:
+      - Visual QA, responsive polish, and product taste usually limit compression.
+
+  refactor:
+    label: Refactor or codebase cleanup
+    ai_compression:
+      optimistic: 0.40
+      expected: 0.60
+      conservative: 0.80
+    confidence: medium
+    notes:
+      - Test coverage and codebase boundaries dominate risk.
+
+  debugging:
+    label: Bug investigation or debugging
+    ai_compression:
+      optimistic: 0.30
+      expected: 0.65
+      conservative: 1.00
+    confidence: low
+    notes:
+      - Debugging can collapse quickly with good logs or remain mostly unchanged with poor reproduction.
+
+  architecture:
+    label: Architecture or technical design
+    ai_compression:
+      optimistic: 0.65
+      expected: 0.80
+      conservative: 0.95
+    confidence: low
+    notes:
+      - AI helps explore options, but tradeoff decisions remain human-owned.
+
+  requirements:
+    label: Requirements, product clarification, or stakeholder alignment
+    ai_compression:
+      optimistic: 0.80
+      expected: 0.90
+      conservative: 1.00
+    confidence: low
+    notes:
+      - Ambiguity and alignment are usually human bottlenecks.
+
+  cross_system_integration:
+    label: Cross-system integration
+    ai_compression:
+      optimistic: 0.50
+      expected: 0.75
+      conservative: 1.00
+    confidence: low
+    notes:
+      - External APIs, auth, staging data, rate limits, and deployment access dominate estimates.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "AI Time Calibrator"
+  short_description: "Estimate AI-assisted development time"
+  default_prompt: "Use $ai-time-calibrator to estimate this software task for an AI-assisted workflow."
+
+policy:
+  allow_implicit_invocation: true

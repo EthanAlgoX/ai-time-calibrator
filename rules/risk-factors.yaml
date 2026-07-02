@@ -1,0 +1,35 @@
+version: 0.1.0
+description: Risk factors that should widen or increase an AI-assisted estimate.
+
+risk_factors:
+  unclear_acceptance_criteria:
+    label: Unclear acceptance criteria
+    effect: Add 10-30% or ask for clarification before estimating.
+
+  weak_test_coverage:
+    label: Weak or missing automated test coverage
+    effect: Add 15-40% verification and regression buffer.
+
+  unfamiliar_codebase:
+    label: Unfamiliar or poorly documented codebase
+    effect: Add 10-35% exploration buffer.
+
+  external_dependency:
+    label: Third-party service, vendor API, or external team dependency
+    effect: Add 20-60% integration buffer.
+
+  production_migration:
+    label: Data migration, production rollout, or irreversible change
+    effect: Add 25-75% planning, verification, and rollback buffer.
+
+  security_or_compliance:
+    label: Security, privacy, compliance, or financial correctness concern
+    effect: Add review time and use conservative estimates.
+
+  visual_polish_required:
+    label: High visual polish or design review required
+    effect: Add 10-30% QA and iteration buffer.
+
+  unknown_reproduction:
+    label: Bug cannot be reliably reproduced yet
+    effect: Estimate investigation separately from implementation.
