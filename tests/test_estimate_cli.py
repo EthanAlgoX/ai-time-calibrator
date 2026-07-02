@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -79,6 +80,47 @@ class EstimateCliTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("invalid choice", result.stderr)
+
+    def test_custom_rules_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            rules_path = Path(tmp_dir) / "custom-task-types.yaml"
+            rules_path.write_text(
+                """
+version: 0.1.0
+task_types:
+  custom_task:
+    label: Custom team task
+    ai_compression:
+      optimistic: 0.50
+      expected: 0.75
+      conservative: 1.00
+    confidence: low
+""".lstrip(),
+                encoding="utf-8",
+            )
+
+            list_result = run_cli("--rules", str(rules_path), "--list-task-types")
+            self.assertEqual(list_result.returncode, 0, list_result.stderr)
+            self.assertIn("custom_task: Custom team task", list_result.stdout)
+            self.assertNotIn("crud_api:", list_result.stdout)
+
+            estimate_result = run_cli(
+                "--rules",
+                str(rules_path),
+                "--traditional-hours",
+                "10",
+                "--task-type",
+                "custom_task",
+                "--format",
+                "json",
+            )
+            self.assertEqual(estimate_result.returncode, 0, estimate_result.stderr)
+            payload = json.loads(estimate_result.stdout)
+            self.assertEqual(payload["task_type"], "custom_task")
+            self.assertEqual(
+                payload["ai_adjusted_estimate_hours"],
+                {"optimistic": 5.0, "expected": 7.5, "conservative": 10.0},
+            )
 
 
 if __name__ == "__main__":

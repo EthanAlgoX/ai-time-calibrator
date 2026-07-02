@@ -36,6 +36,10 @@ rules/
   task-types.yaml            Task categories and default AI compression ranges
   risk-factors.yaml          Risk multipliers and uncertainty signals
   calibration-model.yaml     Estimation workflow and output contract
+adapters/
+  claude-code/CLAUDE.md      Claude Code adapter
+  cursor/rules.md            Cursor rules adapter
+  windsurf/rules.md          Windsurf rules adapter
 skills/
   codex/SKILL.md             Codex skill adapter
 examples/
@@ -96,9 +100,18 @@ Generate JSON output:
 python3 scripts/estimate.py --traditional-hours 24 --task-type crud_api --format json
 ```
 
-## Using With Codex
+Use a custom task type rules file:
 
-The first AI-agent adapter is available at:
+```bash
+python3 scripts/estimate.py \
+  --rules ./my-team-task-types.yaml \
+  --traditional-hours 24 \
+  --task-type crud_api
+```
+
+## AI Tool Adapters
+
+The first Codex skill adapter is available at:
 
 ```text
 skills/codex/SKILL.md
@@ -111,6 +124,16 @@ Example prompt:
 ```text
 Use $ai-time-calibrator to estimate building a CRUD API with tests.
 ```
+
+Additional adapters:
+
+```text
+adapters/claude-code/CLAUDE.md
+adapters/cursor/rules.md
+adapters/windsurf/rules.md
+```
+
+These adapters reuse the same calibration model so estimates stay consistent across tools.
 
 ## Core Principle
 

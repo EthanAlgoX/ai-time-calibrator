@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added Claude Code, Cursor, and Windsurf adapters.
+- Added `--rules` support for custom task type rule files.
 - Added tested CLI that reads task type rules from `rules/task-types.yaml`.
 - Added task type listing and JSON output.
 - Added rule integrity tests and GitHub Actions.

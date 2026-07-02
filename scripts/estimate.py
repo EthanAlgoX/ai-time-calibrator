@@ -111,8 +111,20 @@ def load_task_types(path: Path = DEFAULT_TASK_TYPES_PATH) -> dict[str, dict[str,
     return task_types
 
 
+def build_bootstrap_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument(
+        "--rules",
+        type=Path,
+        default=DEFAULT_TASK_TYPES_PATH,
+        help="Path to a task type rules YAML file.",
+    )
+    return parser
+
+
 def build_parser(task_types: dict[str, dict[str, Any]]) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
+        parents=[build_bootstrap_parser()],
         description="Calibrate a traditional software estimate for AI-assisted development."
     )
     parser.add_argument(
@@ -205,8 +217,11 @@ def print_estimate_text(args: argparse.Namespace, task: dict[str, Any], adjusted
 
 
 def main(argv: list[str] | None = None) -> int:
+    bootstrap_parser = build_bootstrap_parser()
+    bootstrap_args, _ = bootstrap_parser.parse_known_args(argv)
+
     try:
-        task_types = load_task_types()
+        task_types = load_task_types(bootstrap_args.rules)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

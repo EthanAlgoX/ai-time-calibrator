@@ -12,13 +12,14 @@
 
 - Claude Code adapter.
 - Cursor rules adapter.
+- Windsurf rules adapter.
+- Custom CLI rule file support.
 - More real-world estimate examples.
 - Better multi-component estimates.
 
 ## v0.3
 
 - Parse task descriptions into multiple estimate components.
-- Support custom local rule files.
 - Export estimate reports as Markdown.
 
 ## v0.4
