@@ -1,0 +1,50 @@
+version: 0.1.0
+description: Example structure for anonymized AI-assisted development estimate cases.
+
+cases:
+  - id: example-crud-api-001
+    source: synthetic
+    task_type: crud_api
+    task_summary: Add CRUD endpoints for a Project resource in an existing backend.
+    traditional_estimate_hours: 24
+    ai_adjusted_estimate_hours:
+      optimistic: 6
+      expected: 10
+      conservative: 16
+    actual_hours: null
+    confidence: medium
+    context:
+      existing_patterns: true
+      test_coverage: medium
+      external_dependencies: false
+      production_risk: low
+    acceleration_drivers:
+      - Existing backend patterns.
+      - Repetitive endpoint and test scaffolding.
+    risks:
+      - Authorization rules may differ from existing resources.
+      - Database migration review may add coordination time.
+
+  - id: example-production-bugfix-001
+    source: synthetic
+    task_type: debugging
+    task_summary: Investigate and fix an intermittent production checkout failure.
+    traditional_estimate_hours: 16
+    ai_adjusted_estimate_hours:
+      optimistic: 4
+      expected: 12
+      conservative: 20
+    actual_hours: null
+    confidence: low
+    context:
+      reproduction_quality: weak
+      logs_available: partial
+      external_dependencies: true
+      production_risk: high
+    acceleration_drivers:
+      - AI may accelerate log analysis and hypothesis generation.
+      - AI can draft candidate patches once the failure mode is known.
+    risks:
+      - No reliable reproduction yet.
+      - Payment provider behavior may be involved.
+      - Rollout verification may dominate implementation time.

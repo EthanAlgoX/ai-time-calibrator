@@ -56,6 +56,23 @@ class EstimateCliTests(unittest.TestCase):
         self.assertAlmostEqual(payload["ai_adjusted_estimate_hours"]["expected"], 12.0)
         self.assertAlmostEqual(payload["ai_adjusted_estimate_hours"]["conservative"], 15.84)
 
+    def test_markdown_estimate(self) -> None:
+        result = run_cli(
+            "--traditional-hours",
+            "24",
+            "--task-type",
+            "crud_api",
+            "--format",
+            "markdown",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("# AI-Assisted Estimate", result.stdout)
+        self.assertIn("- Task type: `crud_api`", result.stdout)
+        self.assertIn("| Optimistic | 6.0h |", result.stdout)
+        self.assertIn("| Expected | 9.1h |", result.stdout)
+        self.assertIn("| Conservative | 14.4h |", result.stdout)
+
     def test_list_task_types(self) -> None:
         result = run_cli("--list-task-types")
 

@@ -151,7 +151,7 @@ def build_parser(task_types: dict[str, dict[str, Any]]) -> argparse.ArgumentPars
     )
     parser.add_argument(
         "--format",
-        choices=("text", "json"),
+        choices=("text", "json", "markdown"),
         default="text",
         help="Output format.",
     )
@@ -216,6 +216,24 @@ def print_estimate_text(args: argparse.Namespace, task: dict[str, Any], adjusted
         print(f"Risk buffer applied: {args.risk_buffer:.0%}")
 
 
+def print_estimate_markdown(args: argparse.Namespace, task: dict[str, Any], adjusted: dict[str, float]) -> None:
+    print("# AI-Assisted Estimate")
+    print()
+    print(f"- Traditional estimate: {args.traditional_hours:.1f}h")
+    print(f"- Task type: `{args.task_type}` ({task['label']})")
+    print(f"- Confidence: {task['confidence']}")
+    if args.verification_hours:
+        print(f"- Fixed verification/review time added: {args.verification_hours:.1f}h")
+    if args.risk_buffer:
+        print(f"- Risk buffer applied: {args.risk_buffer:.0%}")
+    print()
+    print("| Range | Estimate |")
+    print("| --- | ---: |")
+    print(f"| Optimistic | {adjusted['optimistic']:.1f}h |")
+    print(f"| Expected | {adjusted['expected']:.1f}h |")
+    print(f"| Conservative | {adjusted['conservative']:.1f}h |")
+
+
 def main(argv: list[str] | None = None) -> int:
     bootstrap_parser = build_bootstrap_parser()
     bootstrap_args, _ = bootstrap_parser.parse_known_args(argv)
@@ -253,6 +271,8 @@ def main(argv: list[str] | None = None) -> int:
             "risk_buffer": args.risk_buffer,
         }
         print(json.dumps(payload, indent=2, sort_keys=True))
+    elif args.format == "markdown":
+        print_estimate_markdown(args, task, adjusted)
     else:
         print_estimate_text(args, task, adjusted)
 

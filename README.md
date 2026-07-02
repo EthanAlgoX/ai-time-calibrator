@@ -2,6 +2,8 @@
 
 Calibrate software development estimates for AI-assisted workflows.
 
+[中文说明](README.zh-CN.md)
+
 AI coding agents can dramatically change the time it takes to build software, but many estimates still assume a pre-AI workflow: manual boilerplate, slower test writing, slower documentation lookup, and less automated refactoring. AI Time Calibrator is an open framework for turning traditional engineering estimates into explainable AI-assisted estimates.
 
 The goal is not to make every estimate shorter. The goal is to make estimates more realistic.
@@ -56,6 +58,16 @@ scripts/
 tests/
   test_estimate_cli.py       CLI behavior tests
   test_rules.py              Rule integrity tests
+dataset/
+  estimates.yaml             Example calibration dataset structure
+```
+
+## Dataset
+
+The dataset starts as an example structure for collecting anonymized estimate cases:
+
+```text
+dataset/estimates.yaml
 ```
 
 ## Quick Start
@@ -98,6 +110,12 @@ Generate JSON output:
 
 ```bash
 python3 scripts/estimate.py --traditional-hours 24 --task-type crud_api --format json
+```
+
+Generate Markdown output:
+
+```bash
+python3 scripts/estimate.py --traditional-hours 24 --task-type crud_api --format markdown
 ```
 
 Use a custom task type rules file:

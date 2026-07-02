@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added Markdown CLI output.
+- Added Chinese README.
+- Added example calibration dataset structure.
+- Added v0.1.0 release notes draft.
 - Added Claude Code, Cursor, and Windsurf adapters.
 - Added `--rules` support for custom task type rule files.
 - Added tested CLI that reads task type rules from `rules/task-types.yaml`.
